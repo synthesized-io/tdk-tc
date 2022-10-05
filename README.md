@@ -5,3 +5,9 @@
 
 Synthesized TDK-Testcontainers integration
 
+This project is a thin client for [Synthesized](https://www.synthesized.io/) [TDK](https://docs.synthesized.io/tdk/latest/).
+
+
+See documentation on workflow configuration here.
+
+Example 

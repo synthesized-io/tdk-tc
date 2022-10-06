@@ -9,8 +9,11 @@ This project is a thin client for [Synthesized](https://www.synthesized.io/) [TD
 
 ## Usage
 
-Use Maven or Gradle to import the [most recent version](https://maven-badges.herokuapp.com/maven-central/io.synthesized/tdk-tc) of TDK-TC.
+* Use Maven or Gradle to import the [most recent version](https://maven-badges.herokuapp.com/maven-central/io.synthesized/tdk-tc) of TDK-TC.
 
+* Create input and ouptut `JdbcDatabaseContainer` _in the same network_, create schema and empty database in the input container.
+
+* Run the transformation in the following way:
 
 ```java
    new SynthesizedTDK()

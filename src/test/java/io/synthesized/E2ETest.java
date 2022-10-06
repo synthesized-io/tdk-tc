@@ -48,7 +48,6 @@ public class E2ETest {
     @Test
     void e2eTest() throws SQLException {
         new SynthesizedTDK()
-                .setImageName("sscli")
                 .transform(input, output,
                         "default_config:\n" +
                                 "    mode: \"GENERATION\"\n" +

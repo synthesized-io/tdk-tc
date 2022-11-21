@@ -62,8 +62,7 @@ public final class SynthesizedTDK {
     static String convertUrl(JdbcDatabaseContainer<?> container) {
         int exposedPort = container.getExposedPorts().get(0);
         return container.getJdbcUrl()
-                .replace("localhost", container.getNetworkAliases().get(0))
-                .replace("127.0.0.1", container.getNetworkAliases().get(0))
+                .replace(container.getHost(), container.getNetworkAliases().get(0))
                 .replace(Integer.toString(container.getMappedPort(exposedPort)), Integer.toString(exposedPort));
     }
 }

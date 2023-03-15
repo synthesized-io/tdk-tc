@@ -38,4 +38,4 @@ This project is a thin client for [Synthesized](https://www.synthesized.io/) [TD
     );
 ```
 
-See full documentation on workflow configuration in YAML format [here](https://docs.synthesized.io/tdk/latest/user_guide/userconfig).
+See full documentation on workflow configuration in YAML format [here](https://docs.synthesized.io/tdk/latest/user_guide/reference/configuration_reference).

@@ -51,7 +51,7 @@
         <maven.surefire.plugin.version>2.22.2</maven.surefire.plugin.version>
         <jacoco.maven.plugin.version>0.8.8</jacoco.maven.plugin.version>
         <checkstyle.maven.plugin.version>3.2.0</checkstyle.maven.plugin.version>
-        <checkstyle.version>10.8.0</checkstyle.version>
+        <checkstyle.version>10.9.1</checkstyle.version>
         <testcontainers.version>1.17.6</testcontainers.version>
         <maven.source.plugin.version>3.2.1</maven.source.plugin.version>
         <maven.javadoc.plugin.version>3.5.0</maven.javadoc.plugin.version>

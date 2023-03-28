@@ -11,7 +11,7 @@ public final class SynthesizedTDK {
     private static final Logger LOGGER = LoggerFactory.getLogger(SynthesizedTDK.class);
 
     private String license;
-    private String imageName = "ghcr.io/synthesized-io/tdk-cli:master";
+    private String imageName = "synthesizedio/synthesized-tdk-cli:latest";
 
     /**
      * Sets license key for paid version of TDK.

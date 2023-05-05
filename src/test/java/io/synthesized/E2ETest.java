@@ -13,6 +13,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Arrays;
 import java.util.List;
 
 public class E2ETest {
@@ -36,7 +37,7 @@ public class E2ETest {
     }
 
     private PostgreSQLContainer<?> getContainer(String name, boolean init) {
-        var result = new PostgreSQLContainer<>("postgres:11.1")
+        PostgreSQLContainer<?> result = new PostgreSQLContainer<>("postgres:11.1")
                 .withDatabaseName(name)
                 .withUsername("user")
                 .withPassword("password")
@@ -57,7 +58,8 @@ public class E2ETest {
         try (Connection conn = DriverManager.getConnection(
                 output.getJdbcUrl(), output.getUsername(), output.getPassword());
              Statement stmt = conn.createStatement()) {
-            for (String tableName : List.of("speaker", "conference", "talk", "talkspeakers")) {
+            for (String tableName :
+                    Arrays.asList("speaker", "conference", "talk", "talkspeakers")) {
                 try (ResultSet resultSet = stmt.executeQuery("select count(*) from " + tableName)) {
                     resultSet.next();
                     Assertions.assertThat(resultSet.getInt(1)).isEqualTo(10);

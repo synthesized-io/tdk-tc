@@ -12,33 +12,18 @@ This project is a thin client for https://www.synthesized.io/[Synthesized] https
 
 * Use Maven or Gradle to import the https://maven-badges.herokuapp.com/maven-central/io.synthesized/tdk-tc[most recent version] of TDK-TC.
 
-* Create input and ouptut `JdbcDatabaseContainer` _in the same network_, create schema and empty database in the input container.
+* Create input and ouptut `JdbcDatabaseContainer` _in the same network_, create schema and empty database in the input container, for example:
+
+[source,java]
+----
+include::src/test/java/io/synthesized/E2ETest.java[tag="containers"]
+----
 
 * Run the transformation in the following way:
 
 [source,java]
 ----
-new SynthesizedTDK()
-  // Use this method to alter container image name for the TDK-CLI container
-  //.setImageName(...)
-
-  // Use this method to set license key in case you are using paid version of TDK-CLI
-  //.setLicense(...)
-
-  .transform(
-     //Input JdbcDatabaseContainer: empty database with schema
-     input,
-     //Output JdbcDatabaseContainer: output database with generated data
-     output,
-     //Workflow configuration in YAML format
-        """
-        default_config:
-          mode: "GENERATION"
-          target_row_number: 10
-        global_seed: 42
-        """
-);
+include::src/test/java/io/synthesized/E2ETest.java[tag="transform"]
 ----
 
 See full documentation on workflow configuration in YAML format https://docs.synthesized.io/tdk/latest/user_guide/reference/configuration_reference[here].
-

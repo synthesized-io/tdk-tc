@@ -1,3 +1,8 @@
+// ATTENTION!
+// README.adoc file is auto-generated to overcome
+// GitHub's limitation (not supporting "include" directive).
+// Always edit readme-source.adoc instead!
+
 = TDK-TC
 
 image::https://github.com/synthesized-io/tdk-tc/workflows/build/badge.svg[Actions Status: build, link="https://github.com/synthesized-io/tdk-tc/actions?query=workflow%3A"build""]

@@ -21,6 +21,7 @@ public class E2ETest {
     private PostgreSQLContainer<?> input;
     private PostgreSQLContainer<?> output;
 
+    //tag::containers[]
     @BeforeEach
     void setUp() {
         network = Network.newNetwork();
@@ -28,12 +29,6 @@ public class E2ETest {
         output = getContainer("output", false);
         input.start();
         output.start();
-    }
-
-    @AfterEach
-    void tearDown() {
-        input.stop();
-        output.stop();
     }
 
     private PostgreSQLContainer<?> getContainer(String name, boolean init) {
@@ -45,16 +40,34 @@ public class E2ETest {
         result = init ? result.withInitScript("dbcreate.sql") : result;
         return result;
     }
+    //end::containers[]
+
+    @AfterEach
+    void tearDown() {
+        input.stop();
+        output.stop();
+    }
 
     @Test
     void e2eTest() throws SQLException {
+        // tag::transform[]
         new SynthesizedTDK()
-                .transform(input, output,
+          // Use this method to alter container image name for the TDK-CLI container
+          //.setImageName(...)
+
+          // Use this method to set license key in case you are using paid version of TDK-CLI
+          //.setLicense(...)
+                .transform(
+                    //Input JdbcDatabaseContainer: empty database with schema
+                    input, 
+                    //Output JdbcDatabaseContainer: output database with generated data
+                    output,
                         "default_config:\n" +
                                 "    mode: \"GENERATION\"\n" +
                                 "    target_row_number: 10\n" +
                                 "global_seed: 42\n"
                 );
+        // end::transform[]
         try (Connection conn = DriverManager.getConnection(
                 output.getJdbcUrl(), output.getUsername(), output.getPassword());
              Statement stmt = conn.createStatement()) {

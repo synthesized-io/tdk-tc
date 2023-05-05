@@ -1,0 +1,34 @@
+// ATTENTION!
+// README.adoc file is auto-generated to overcome
+// GitHub's limitation (not supporting "include" directive).
+// Always edit readme-source.adoc instead!
+
+= TDK-TC
+
+image::https://github.com/synthesized-io/tdk-tc/workflows/build/badge.svg[Actions Status: build, link="https://github.com/synthesized-io/tdk-tc/actions?query=workflow%3A"build""]
+
+image::https://maven-badges.herokuapp.com/maven-central/io.synthesized/tdk-tc/badge.svg[Maven Central, link="https://maven-badges.herokuapp.com/maven-central/io.synthesized/tdk-tc"]
+
+== Synthesized TDK-Testcontainers integration
+
+This project is a thin client for https://www.synthesized.io/[Synthesized] https://docs.synthesized.io/tdk/latest/[TDK] integrated with https://www.testcontainers.org/[TestContainers] which can be used in order to generate testing data in an empty database.
+
+== Usage
+
+* Use Maven or Gradle to import the https://maven-badges.herokuapp.com/maven-central/io.synthesized/tdk-tc[most recent version] of TDK-TC.
+
+* Create input and ouptut `JdbcDatabaseContainer` _in the same network_, create schema and empty database in the input container, for example:
+
+[source,java]
+----
+include::src/test/java/io/synthesized/E2ETest.java[tag="containers"]
+----
+
+* Run the transformation in the following way:
+
+[source,java]
+----
+include::src/test/java/io/synthesized/E2ETest.java[tag="transform"]
+----
+
+See full documentation on workflow configuration in YAML format https://docs.synthesized.io/tdk/latest/user_guide/reference/configuration_reference[here].

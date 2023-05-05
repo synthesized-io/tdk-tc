@@ -1,0 +1,24 @@
+name: Build readme
+
+on:
+  push:
+    paths:
+      - readme-source.adoc
+    branches:
+      - '**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install asciidoctor-reducer
+        run: sudo gem install asciidoctor-reducer --pre
+
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Reduce readme
+        run: asciidoctor-reducer -o README.adoc readme-source.adoc
+
+      - name: Commit readme
+        uses: EndBug/add-and-commit@v9

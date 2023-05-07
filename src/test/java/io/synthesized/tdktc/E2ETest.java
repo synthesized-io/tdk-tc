@@ -1,7 +1,5 @@
-package io.synthesized;
+package io.synthesized.tdktc;
 
-import io.synthesized.tdktc.SynthesizedTDK;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,7 +12,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Arrays;
-import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class E2ETest {
     private Network network;
@@ -75,7 +74,7 @@ public class E2ETest {
                     Arrays.asList("speaker", "conference", "talk", "talkspeakers")) {
                 try (ResultSet resultSet = stmt.executeQuery("select count(*) from " + tableName)) {
                     resultSet.next();
-                    Assertions.assertThat(resultSet.getInt(1)).isEqualTo(10);
+                    assertThat(resultSet.getInt(1)).isEqualTo(10);
                 }
             }
         }

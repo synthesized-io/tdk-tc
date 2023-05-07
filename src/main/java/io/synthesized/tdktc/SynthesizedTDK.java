@@ -7,6 +7,8 @@ import org.testcontainers.containers.JdbcDatabaseContainer;
 import org.testcontainers.containers.output.Slf4jLogConsumer;
 import org.testcontainers.containers.startupcheck.OneShotStartupCheckStrategy;
 
+import java.util.Objects;
+
 public final class SynthesizedTDK {
     private static final Logger LOGGER = LoggerFactory.getLogger(SynthesizedTDK.class);
 
@@ -29,7 +31,13 @@ public final class SynthesizedTDK {
      * @param imageName image name to be used for running TDK.
      */
     public SynthesizedTDK setImageName(String imageName) {
-        this.imageName = imageName;
+        if (validateImage(imageName)) {
+            this.imageName = imageName;
+        } else {
+            throw new IllegalArgumentException(
+                    String.format("Image %s does not appear to be a valid Synthesized TDK.",
+                            imageName));
+        }
         return this;
     }
 
@@ -59,7 +67,17 @@ public final class SynthesizedTDK {
         }
     }
 
+    boolean validateImage(String dockerImageName){
+        try (GenericContainer<?> container = new GenericContainer<>(dockerImageName)) {
+            container.withEnv("SYNTHESIZED_COMMAND", "tdk --version")
+                    .withStartupCheckStrategy(new OneShotStartupCheckStrategy())
+                    .start();
+            return container.getLogs().contains("Synthesized TDK CLI ver");
+        }
+    }
+
     static String convertUrl(JdbcDatabaseContainer<?> container) {
+        Objects.requireNonNull(container);
         int exposedPort = container.getExposedPorts().get(0);
         return container.getJdbcUrl()
                 .replace(container.getHost(), container.getNetworkAliases().get(0))

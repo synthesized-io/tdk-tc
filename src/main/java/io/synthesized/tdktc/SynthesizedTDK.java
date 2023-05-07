@@ -67,7 +67,7 @@ public final class SynthesizedTDK {
         }
     }
 
-    boolean validateImage(String dockerImageName){
+    boolean validateImage(String dockerImageName) {
         try (GenericContainer<?> container = new GenericContainer<>(dockerImageName)) {
             container.withEnv("SYNTHESIZED_COMMAND", "tdk --version")
                     .withStartupCheckStrategy(new OneShotStartupCheckStrategy())

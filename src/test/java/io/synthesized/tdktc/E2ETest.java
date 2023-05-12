@@ -53,7 +53,6 @@ public class E2ETest {
         new SynthesizedTDK(SynthesizedTDK.DEFAULT_IMAGE_NAME)
           // Use this method to alter container image name for the TDK-CLI container
           //.setImageName(...)
-
           // Use this method to set license key in case you are using paid version of TDK-CLI
           //.setLicense(...)
                 .transform(

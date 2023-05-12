@@ -39,7 +39,7 @@ public final class SynthesizedTDK {
     }
 
     public void transform(JdbcDatabaseContainer<?> input, JdbcDatabaseContainer<?> output, String config) {
-        if (!dockerImageName.isCompatibleWith(DEFAULT_IMAGE_NAME) && ! validateImage(dockerImageName)) {
+        if (!dockerImageName.isCompatibleWith(DEFAULT_IMAGE_NAME) && !validateImage(dockerImageName)) {
             throw new IllegalArgumentException(
                     String.format("Image %s does not appear to be a valid Synthesized TDK.",
                             dockerImageName.asCanonicalNameString()));

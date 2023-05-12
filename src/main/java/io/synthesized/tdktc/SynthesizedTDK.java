@@ -5,15 +5,28 @@ import org.slf4j.LoggerFactory;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.JdbcDatabaseContainer;
 import org.testcontainers.containers.output.Slf4jLogConsumer;
+import org.testcontainers.containers.startupcheck.IndefiniteWaitOneShotStartupCheckStrategy;
 import org.testcontainers.containers.startupcheck.OneShotStartupCheckStrategy;
+import org.testcontainers.utility.DockerImageName;
 
 import java.util.Objects;
 
 public final class SynthesizedTDK {
+
+    public static final DockerImageName DEFAULT_IMAGE_NAME =
+            DockerImageName.parse("synthesizedio/synthesized-tdk-cli");
     private static final Logger LOGGER = LoggerFactory.getLogger(SynthesizedTDK.class);
 
+    private final DockerImageName dockerImageName;
     private String license;
-    private String imageName = "synthesizedio/synthesized-tdk-cli:latest";
+
+    public SynthesizedTDK(final String dockerImageName) {
+        this(DockerImageName.parse(dockerImageName));
+    }
+
+    public SynthesizedTDK(final DockerImageName dockerImageName) {
+        this.dockerImageName = dockerImageName;
+    }
 
     /**
      * Sets license key for paid version of TDK.
@@ -25,26 +38,16 @@ public final class SynthesizedTDK {
         return this;
     }
 
-    /**
-     * Sets Docker image name which is used for running TDK.
-     *
-     * @param imageName image name to be used for running TDK.
-     */
-    public SynthesizedTDK setImageName(String imageName) {
-        if (validateImage(imageName)) {
-            this.imageName = imageName;
-        } else {
+    public void transform(JdbcDatabaseContainer<?> input, JdbcDatabaseContainer<?> output, String config) {
+        if (!dockerImageName.isCompatibleWith(DEFAULT_IMAGE_NAME) && ! validateImage(dockerImageName)) {
             throw new IllegalArgumentException(
                     String.format("Image %s does not appear to be a valid Synthesized TDK.",
-                            imageName));
+                            dockerImageName.asCanonicalNameString()));
         }
-        return this;
-    }
 
-    public void transform(JdbcDatabaseContainer<?> input, JdbcDatabaseContainer<?> output, String config) {
         String inputURL = convertUrl(input);
         String outputURL = convertUrl(output);
-        try (GenericContainer<?> container = new GenericContainer<>(imageName)) {
+        try (GenericContainer<?> container = new GenericContainer<>(dockerImageName)) {
             if (license != null) {
                 container.withEnv("SYNTHESIZED_KEY", license);
             }
@@ -57,7 +60,7 @@ public final class SynthesizedTDK {
                         .withEnv("SYNTHESIZED_OUTPUT_USERNAME", output.getUsername())
                         .withEnv("SYNTHESIZED_OUTPUT_URL", outputURL)
                         .withEnv("SYNTHESIZED_USERCONFIG", config)
-                        .withStartupCheckStrategy(new OneShotStartupCheckStrategy())
+                        .withStartupCheckStrategy(new IndefiniteWaitOneShotStartupCheckStrategy())
                         .start();
             } catch (Throwable e) {
                 LOGGER.warn(container.getLogs());
@@ -67,7 +70,7 @@ public final class SynthesizedTDK {
         }
     }
 
-    boolean validateImage(String dockerImageName) {
+    static boolean validateImage(DockerImageName dockerImageName) {
         try (GenericContainer<?> container = new GenericContainer<>(dockerImageName)) {
             container.withEnv("SYNTHESIZED_COMMAND", "tdk --version")
                     .withStartupCheckStrategy(new OneShotStartupCheckStrategy())

@@ -1,45 +1,36 @@
 package io.synthesized.tdktc;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.testcontainers.utility.DockerImageName;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class ContainerCompatibilityTest {
-    public static final String COMPATIBLE_IMAGE = "synthesizedio/synthesized-tdk-cli:latest";
-    public static final String INCOMPATIBLE_IMAGE = "rancher/cowsay:latest";
-    private SynthesizedTDK synthesizedTDK;
-
-    @BeforeEach
-    void setUp() {
-        synthesizedTDK = new SynthesizedTDK();
-    }
+    public static final DockerImageName COMPATIBLE_IMAGE = DockerImageName.parse("synthesizedio/synthesized-tdk-cli:latest");
+    public static final DockerImageName INCOMPATIBLE_IMAGE = DockerImageName.parse("rancher/cowsay:latest");
 
     @Test
     void checkCompatibleImage() {
-        assertThat(synthesizedTDK
+        assertThat(SynthesizedTDK
                 .validateImage(COMPATIBLE_IMAGE))
                 .isTrue();
     }
 
-    @Test
-    void setCompatibleImage() {
-        assertThat(synthesizedTDK
-                .setImageName(COMPATIBLE_IMAGE))
-                .isSameAs(synthesizedTDK);
-    }
 
     @Test
     void checkNonCompatibleImage() {
-        assertThat(synthesizedTDK
+        assertThat(SynthesizedTDK
                 .validateImage(INCOMPATIBLE_IMAGE))
                 .isFalse();
     }
 
     @Test
     void setNonCompatibleImage() {
-        assertThrows(IllegalArgumentException.class, () -> synthesizedTDK
-                .setImageName(INCOMPATIBLE_IMAGE));
+        assertThatThrownBy(() -> new SynthesizedTDK(INCOMPATIBLE_IMAGE)
+                .transform(null, null, ""))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining(INCOMPATIBLE_IMAGE.asCanonicalNameString());
+
     }
 }

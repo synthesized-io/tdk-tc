@@ -6,7 +6,7 @@
 
     <groupId>io.synthesized</groupId>
     <artifactId>tdk-tc</artifactId>
-    <version>1.04</version>
+    <version>1.05</version>
     <name>TDK-TC</name>
 
     <packaging>jar</packaging>

@@ -21,14 +21,14 @@ This project is a thin client for https://www.synthesized.io/[Synthesized] https
 
 [source,java]
 ----
-include::src/test/java/io/synthesized/E2ETest.java[tag="containers"]
+include::src/test/java/io/synthesized/tdktc/E2ETest.java[tag="containers"]
 ----
 
 * Run the transformation in the following way:
 
 [source,java]
 ----
-include::src/test/java/io/synthesized/E2ETest.java[tag="transform"]
+include::src/test/java/io/synthesized/tdktc/E2ETest.java[tag="transform"]
 ----
 
 See full documentation on workflow configuration in YAML format https://docs.synthesized.io/tdk/latest/user_guide/reference/configuration_reference[here].
